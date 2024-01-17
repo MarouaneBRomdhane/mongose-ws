@@ -12,7 +12,7 @@ exports.getuser = async (req, res) => {
   try {
     const user = await users.find();
 
-    res.status(200).send({ message: "User has been found!", all_users: user });
+    res.status(200).send({ message: "User has been found!", all_users: user }); //res.data in the payload for from the action
   } catch (error) {
     res.status(500).send({ message: "User wasn't found!" });
   }
