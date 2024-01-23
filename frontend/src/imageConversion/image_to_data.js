@@ -1,62 +1,66 @@
-import { useState } from "react";
+// import { useState } from "react";
 
-function ImageProcessorComponent() {
-  const [dataUri, setDataUri] = useState("");
-  const [jsonResult, setJsonResult] = useState(null);
+// function ImageProcessorComponent({ imagePath, jsonFilePath }) {
+//   const [dataUri, setDataUri] = useState("");
+//   const [jsonData, setJsonData] = useState(null);
 
-  function handleFileChange(event) {
-    const file = event.target.files[0];
+//   const processImageAndSaveToJSON = async () => {
+//     try {
+//       const fileBinary = await fetch(imagePath).then((res) => res.blob());
 
-    if (file) {
-      const reader = new FileReader();
+//       // Process the image data as needed
+//       const base64Encoded = await processImageData(fileBinary);
 
-      reader.onload = (e) => {
-        const base64Encoded = e.target.result.split(",")[1];
-        const dataUri = `data:${file.type};base64,${base64Encoded}`;
-        setDataUri(dataUri);
+//       // Update the state with the processed data
+//       setDataUri(`data:${fileBinary.type};base64,${base64Encoded}`);
 
-        // Example: Populate processedData with the base64-encoded image data
-        const processedData = {
-          imageData: dataUri,
-        };
+//       // Create a dictionary with the processed data
+//       const processedData = {
+//         image_data_uri: `data:${fileBinary.type};base64,${base64Encoded}`,
+//         // Include other processed data as needed
+//       };
 
-        // Save the JSON result in the component state
-        setJsonResult(processedData);
-      };
+//       // Save the data to a JSON file
+//       await fetch(jsonFilePath, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(processedData),
+//       });
 
-      reader.readAsDataURL(file);
-    }
-  }
+//       // Update the state with the processed JSON data
+//       setJsonData(processedData);
 
-  function downloadJson() {
-    if (jsonResult) {
-      const jsonString = JSON.stringify(jsonResult, null, 2);
-      const blob = new Blob([jsonString], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
+//       console.log("Image processed and JSON updated successfully");
+//     } catch (error) {
+//       console.error("Error processing image and updating JSON:", error);
+//     }
+//   };
 
-      // Create a download link
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "processedData.json";
-      a.click();
+//   const processImageData = async (fileBinary) => {
+//     // Perform any image processing steps needed and return the base64-encoded data
+//     // For example, you can use FileReader or other image processing libraries
 
-      // Clean up
-      URL.revokeObjectURL(url);
-    }
-  }
+//     const base64Encoded = await new Promise((resolve) => {
+//       const reader = new FileReader();
+//       reader.onloadend = () => {
+//         const base64 = reader.result.split(",")[1];
+//         resolve(base64);
+//       };
+//       reader.readAsDataURL(fileBinary);
+//     });
 
-  return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
-      {dataUri && <img src={dataUri} alt="Processed Image" />}
-      {jsonResult && (
-        <div>
-          <button onClick={downloadJson}>Download JSON</button>
-          {/* Display JSON data if needed */}
-          <pre>{JSON.stringify(jsonResult, null, 2)}</pre>
-        </div>
-      )}
-    </div>
-  );
-}
-export default ImageProcessorComponent;
+//     return base64Encoded;
+//   };
+
+//   return (
+//     <div>
+//       {/* Render the processed data as needed */}
+//       {dataUri && <img src={dataUri} alt="" />}
+//       {jsonData}
+//     </div>
+//   );
+// }
+
+// export default ImageProcessorComponent;

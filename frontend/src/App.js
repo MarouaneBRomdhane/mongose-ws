@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Nav from "./components/Nav";
+// import Nav from "./components/Nav";
 import Register from "./components/Register";
 import { UserList } from "./components/UserList";
 

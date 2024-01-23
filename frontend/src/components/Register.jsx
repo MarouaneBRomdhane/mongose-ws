@@ -42,19 +42,60 @@ export default function Register() {
   const [gender, setgender] = useState("");
   const [image, setimage] = useState("");
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault(); // allows modifications inside the inputs
     const data = { name, age, image, gender };
     console.log(data);
     dispatch(Createuser(data));
-    navigate("/home")
+    navigate("/home");
   };
-
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    // You can perform additional validations or processing with the selected file if needed
-    setimage(URL.createObjectURL(file));
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+
+        img.onload = () => {
+          const MAX_WIDTH = 800; // Set your desired maximum width
+          const MAX_HEIGHT = 600; // Set your desired maximum height
+
+          let width = img.width;
+          let height = img.height;
+
+          // Check if the image needs to be resized
+          if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+            const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+
+            // Resize the image maintaining aspect ratio
+            width *= ratio;
+            height *= ratio;
+          }
+
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          // Set the canvas dimensions to the resized image dimensions
+          canvas.width = width;
+          canvas.height = height;
+
+          // Draw the resized image onto the canvas
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Convert the canvas content to a data URI with compression (adjust quality as needed)
+          const dataUri = canvas.toDataURL("image/jpeg", 0.8);
+
+          setimage(dataUri);
+          console.log(dataUri);
+        };
+      };
+
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
