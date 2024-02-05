@@ -1,15 +1,14 @@
 const express = require("express");
 
 const {
-  createuser,
-  getuser,
-  deleteuser,
-  updateuser,
+  createproduct,
+  getproduct,
+  updateproduct,
+  payment,
 } = require("../Controller/Controller");
-const user_router = express.Router();
-user_router.post("/create", createuser);
-user_router.get("/find", getuser);
-user_router.delete("/delete/:id", deleteuser);
-user_router.put("/update/:id", updateuser);
-
-module.exports = user_router;
+const product_router = express.Router();
+product_router.post("/create", createproduct);
+product_router.get("/find", getproduct);
+product_router.put("/update/:id", updateproduct);
+product_router.post("/create-checkout-session", payment);
+module.exports = product_router;
